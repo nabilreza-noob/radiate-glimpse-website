@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Radiate Glimpse — Wedding Photography, Dhaka</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:     #1a1714;
+      --bg2:    #211e1a;
+      --bg3:    #272320;
+      --cream:  #e8e2d9;
+      --muted:  #7a736a;
+      --faint:  rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.09);
+      --serif:  'Cormorant Garamond', Georgia, serif;
+      --sans:   'Inter', system-ui, sans-serif;
+      --ease:   cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--bg); color: var(--cream); font-weight: 300; overflow-x: hidden; }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 2px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 52px; height: 72px;
+      background: transparent;
+      transition: background 0.5s var(--ease), border-color 0.5s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.filled {
+      background: rgba(24,21,18,0.96);
+      backdrop-filter: blur(16px);
+      border-bottom-color: var(--border);
+    }
+    .nav-brand {
+      font-family: var(--serif); font-size: 1.15rem;
+      letter-spacing: 0.12em; font-weight: 300;
+      color: #fff; text-decoration: none;
+    }
+    .nav-right { display: flex; align-items: center; gap: 36px; }
+    .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
+    .nav-links a {
+      font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.25s;
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-social { display: flex; gap: 14px; }
+    .nav-social a {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px;
+      border: 1px solid var(--border); border-radius: 50%;
+      color: rgba(255,255,255,0.45); text-decoration: none;
+      transition: color 0.25s, border-color 0.25s;
+    }
+    .nav-social a:hover { color: #fff; border-color: rgba(255,255,255,0.3); }
+    .nav-social svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .nav-social .fb-icon { fill: currentColor; stroke: none; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; height: 100vh; min-height: 640px;
+      display: flex; align-items: flex-end;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('hero-couple.jpg') center 25%/cover no-repeat;
+      transform: scale(1.04);
+      transition: transform 8s ease-out;
+    }
+    .hero-bg.loaded { transform: scale(1); }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        170deg,
+        rgba(10,8,6,0.25) 0%,
+        rgba(10,8,6,0.1) 40%,
+        rgba(10,8,6,0.75) 75%,
+        rgba(10,8,6,0.95) 100%
+      );
+    }
+    .hero-content {
+      position: relative; z-index: 1;
+      padding: 0 72px 80px; max-width: 760px;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 0.65rem; letter-spacing: 0.28em; text-transform: uppercase;
+      color: rgba(255,255,255,0.45); margin-bottom: 24px;
+    }
+    .hero-tag::before {
+      content: ''; display: block; width: 28px; height: 1px;
+      background: rgba(255,255,255,0.35);
+    }
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(3.8rem, 9vw, 7rem);
+      font-weight: 300; line-height: 0.95;
+      color: #fff; margin-bottom: 24px; letter-spacing: -0.01em;
+    }
+    .hero-title em { font-style: italic; color: rgba(255,255,255,0.55); display: block; }
+    .hero-desc {
+      font-family: var(--serif); font-style: italic;
+      font-size: clamp(1rem, 2vw, 1.2rem); font-weight: 300;
+      color: rgba(255,255,255,0.6); margin-bottom: 44px; line-height: 1.65;
+    }
+    .hero-actions { display: flex; align-items: center; gap: 32px; }
+    .btn-primary {
+      display: inline-block;
+      font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--bg); background: var(--cream);
+      text-decoration: none; padding: 14px 32px;
+      transition: background 0.25s, color 0.25s;
+    }
+    .btn-primary:hover { background: #fff; }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(255,255,255,0.55); text-decoration: none;
+      transition: color 0.25s;
+    }
+    .btn-ghost:hover { color: #fff; }
+    .btn-ghost svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; transition: transform 0.25s; }
+    .btn-ghost:hover svg { transform: translateX(4px); }
+
+    /* ── DIVIDER ── */
+    .divider {
+      display: flex; align-items: center; justify-content: center;
+      gap: 20px; padding: 56px 0;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; max-width: 120px; height: 1px;
+      background: var(--border);
+    }
+    .divider span {
+      font-family: var(--serif); font-style: italic;
+      font-size: 1.4rem; color: rgba(255,255,255,0.15);
+    }
+
+    /* ── SERVICES ── */
+    .services {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+    }
+    .service-item {
+      padding: 44px 40px; border-right: 1px solid var(--border);
+    }
+    .service-item:last-child { border-right: none; }
+    .service-num {
+      font-family: var(--serif); font-size: 2.5rem; font-weight: 300;
+      color: rgba(255,255,255,0.07); line-height: 1; margin-bottom: 20px;
+    }
+    .service-title {
+      font-family: var(--serif); font-size: 1.2rem; font-weight: 300;
+      color: var(--cream); margin-bottom: 10px;
+    }
+    .service-desc {
+      font-size: 0.75rem; color: var(--muted); line-height: 1.75;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── SECTION HEADER ── */
+    .sec-header {
+      text-align: center; padding: 80px 40px 56px;
+    }
+    .sec-label {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-size: 0.64rem; letter-spacing: 0.26em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 20px;
+    }
+    .sec-label::before, .sec-label::after {
+      content: ''; display: block; width: 20px; height: 1px; background: var(--muted);
+    }
+    .sec-title {
+      font-family: var(--serif); font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 300; color: var(--cream); line-height: 1.1;
+    }
+    .sec-title em { font-style: italic; color: rgba(255,255,255,0.4); }
+
+    /* ── GALLERY ── */
+    #work { background: var(--bg); padding-bottom: 80px; }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto;
+      gap: 6px;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Featured large items */
+    .gallery-grid .g-wide { grid-column: span 2; }
+    .gallery-grid .g-tall { grid-row: span 2; }
+
+    .g-item {
+      position: relative; overflow: hidden;
+      background: var(--bg3); cursor: pointer;
+    }
+    .g-item img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      aspect-ratio: 4/3;
+      transition: transform 0.6s var(--ease), filter 0.4s;
+    }
+    .g-item.g-tall img { aspect-ratio: unset; height: 100%; min-height: 500px; }
+    .g-item.g-wide img { aspect-ratio: 16/9; }
+    .g-item:hover img { transform: scale(1.05); filter: brightness(0.8); }
+    .g-item-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%);
+      opacity: 0; transition: opacity 0.4s;
+      display: flex; align-items: flex-end; padding: 20px;
+    }
+    .g-item:hover .g-item-overlay { opacity: 1; }
+    .g-item-overlay span {
+      font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--bg2); }
+    .about-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 5fr 6fr;
+      gap: 80px; align-items: center;
+      padding: 0 60px 96px;
+    }
+    .about-img-wrap { position: relative; }
+    .about-img-wrap img { width: 100%; display: block; filter: grayscale(10%) brightness(0.9); }
+    .about-img-wrap::before {
+      content: '';
+      position: absolute; top: -12px; left: -12px;
+      width: 60%; height: 60%;
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+      z-index: 0; pointer-events: none;
+    }
+    .about-img-wrap::after {
+      content: '';
+      position: absolute; bottom: -12px; right: -12px;
+      width: 60%; height: 60%;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      z-index: 0; pointer-events: none;
+    }
+    .about-img-wrap img { position: relative; z-index: 1; }
+
+    .about-text .sec-label { justify-content: flex-start; }
+    .about-text .sec-label::before { display: none; }
+    .about-text .sec-title { text-align: left; margin-bottom: 28px; }
+    .about-text p {
+      font-size: 0.9rem; line-height: 1.95;
+      color: rgba(255,255,255,0.45); margin-bottom: 16px;
+    }
+    .about-divider {
+      width: 40px; height: 1px; background: var(--border); margin: 28px 0;
+    }
+    .about-location {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 20px;
+    }
+    .about-location svg { width: 12px; height: 12px; fill: currentColor; flex-shrink: 0; }
+    .social-row { display: flex; gap: 12px; margin-top: 8px; }
+    .social-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      border: 1px solid var(--border); padding: 10px 18px;
+      transition: color 0.25s, border-color 0.25s;
+    }
+    .social-btn:hover { color: var(--cream); border-color: rgba(255,255,255,0.25); }
+    .social-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+    .social-btn .fb-svg { fill: currentColor; }
+    .social-btn .ig-svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--bg3); }
+    .contact-inner { max-width: 600px; margin: 0 auto; padding: 0 40px 96px; }
+    .contact-inner > p {
+      text-align: center; font-family: var(--serif); font-style: italic;
+      font-size: 1.1rem; color: rgba(255,255,255,0.35);
+      line-height: 1.8; margin-bottom: 52px;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; }
+    .form-group { margin-bottom: 28px; }
+    .form-group label {
+      display: block; font-size: 0.62rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%; border: none;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 0; font-family: var(--sans); font-size: 0.88rem;
+      font-weight: 300; color: var(--cream); background: transparent;
+      outline: none; transition: border-color 0.25s;
+      -webkit-appearance: none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(255,255,255,0.18); }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus { border-bottom-color: rgba(255,255,255,0.35); }
+    .form-group textarea { resize: none; height: 88px; }
+    .form-group select { cursor: pointer; color: rgba(255,255,255,0.5); }
+    .form-group select option { background: #1a1714; color: var(--cream); }
+    .submit-btn {
+      display: block; width: 100%; margin-top: 16px; padding: 18px;
+      background: var(--cream); color: var(--bg);
+      font-family: var(--sans); font-size: 0.68rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      border: none; cursor: pointer; transition: background 0.25s;
+    }
+    .submit-btn:hover { background: #fff; }
+    .form-success {
+      text-align: center; font-family: var(--serif); font-size: 1.5rem;
+      font-style: italic; color: rgba(255,255,255,0.35);
+      padding: 48px 0; display: none;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0d0b09;
+      border-top: 1px solid var(--border);
+      padding: 36px 52px;
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 16px;
+    }
+    .footer-brand {
+      font-family: var(--serif); font-size: 1rem;
+      letter-spacing: 0.1em; color: rgba(255,255,255,0.25);
+    }
+    .footer-center {
+      font-size: 0.62rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: rgba(255,255,255,0.2);
+    }
+    .footer-social { display: flex; gap: 10px; }
+    .footer-social a {
+      display: flex; align-items: center; justify-content: center;
+      width: 30px; height: 30px;
+      border: 1px solid var(--border); border-radius: 50%;
+      color: rgba(255,255,255,0.3); text-decoration: none;
+      transition: color 0.25s, border-color 0.25s;
+    }
+    .footer-social a:hover { color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.25); }
+    .footer-social svg { width: 12px; height: 12px; }
+    .footer-social .fb-icon { fill: currentColor; stroke: none; }
+    .footer-social .ig-icon { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.96); z-index: 200;
+      justify-content: center; align-items: center;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 92vw; max-height: 92vh; object-fit: contain; }
+    .lb-close {
+      position: absolute; top: 20px; right: 28px;
+      color: rgba(255,255,255,0.4); font-size: 1.8rem;
+      cursor: pointer; line-height: 1; transition: color 0.2s;
+    }
+    .lb-close:hover { color: #fff; }
+
+    /* ── FIELD ERRORS ── */
+    .field-error {
+      display: block; font-size: 0.65rem; color: #e07070;
+      margin-top: 5px; letter-spacing: 0.06em; min-height: 14px;
+    }
+    .form-error-global {
+      text-align: center; font-size: 0.8rem; color: #e07070;
+      margin-bottom: 20px; padding: 12px;
+      border: 1px solid rgba(224,112,112,0.3);
+    }
+    [data-fs-submit-btn]:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ── CONTACT DIRECT ── */
+    .contact-direct {
+      text-align: center; margin-top: 40px; padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+    .contact-direct p {
+      font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 14px; font-style: normal;
+    }
+    .contact-links {
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+    }
+    .email-link {
+      display: inline-flex; align-items: center; gap: 9px;
+      font-family: var(--sans); font-size: 0.85rem; font-weight: 300;
+      color: rgba(255,255,255,0.5); text-decoration: none;
+      border-bottom: 1px solid var(--border); padding-bottom: 4px;
+      transition: color 0.25s, border-color 0.25s;
+    }
+    .email-link:hover { color: var(--cream); border-color: rgba(255,255,255,0.3); }
+    .email-link svg { flex-shrink: 0; opacity: 0.6; }
+
+    /* ── FADE IN ── */
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .hero-content { padding: 0 32px 60px; }
+      .services { grid-template-columns: 1fr; }
+      .service-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .service-item:last-child { border-bottom: none; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); padding: 0 12px; }
+      .g-wide { grid-column: span 2; }
+      .g-tall { grid-row: span 1; }
+      .g-tall img { min-height: unset; }
+      .about-inner { grid-template-columns: 1fr; padding: 0 32px 80px; gap: 48px; }
+      .about-img-wrap::before, .about-img-wrap::after { display: none; }
+      footer { flex-direction: column; align-items: center; text-align: center; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .g-wide { grid-column: span 1; }
+      .form-row { grid-template-columns: 1fr; }
+      .contact-inner { padding: 0 24px 72px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-brand">Radiate Glimpse</a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Book Now</a></li>
+    </ul>
+    <div class="nav-social">
+      <a href="https://www.facebook.com/radiateglimpse" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="fb-icon" d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/radiate_glimpse.bd" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-tag">Wedding Photography · Dhaka, Bangladesh</p>
+    <h1 class="hero-title">Radiate<em>Glimpse</em></h1>
+    <p class="hero-desc">Capturing every moment from your precious life events,<br>which you can cherish for a lifetime.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Book a Session</a>
+      <a href="#work" class="btn-ghost">
+        View Our Work
+        <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<div class="services fade-in">
+  <div class="service-item">
+    <div class="service-num">01</div>
+    <div class="service-title">Outdoor Portrait Sessions</div>
+    <div class="service-desc">Pre &amp; post wedding portraits in natural, outdoor settings — golden hour, gardens, and urban backdrops across Dhaka.</div>
+  </div>
+  <div class="service-item">
+    <div class="service-num">02</div>
+    <div class="service-title">Full Event Coverage</div>
+    <div class="service-desc">Complete wedding day documentation — from the first preparations to the final celebration. Every detail, every emotion.</div>
+  </div>
+  <div class="service-item">
+    <div class="service-num">03</div>
+    <div class="service-title">Based in Dhaka</div>
+    <div class="service-desc">Available for weddings across Bangladesh and beyond. We travel wherever your story takes us.</div>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<section id="work">
+  <div class="sec-header fade-in">
+    <p class="sec-label">Portfolio</p>
+    <h2 class="sec-title">Wedding <em>Stories</em></h2>
+  </div>
+
+  <div class="gallery-grid">
+    <div class="g-item g-tall fade-in" onclick="openLightbox(this)">
+      <img src="hero-couple.jpg" alt="Couple dancing under dramatic light" loading="lazy"/>
+      <div class="g-item-overlay"><span>Celebration</span></div>
+    </div>
+    <div class="g-item fade-in" onclick="openLightbox(this)">
+      <img src="p02.jpg" alt="Intimate wedding ceremony moment" loading="lazy"/>
+      <div class="g-item-overlay"><span>Ceremony</span></div>
+    </div>
+    <div class="g-item fade-in" onclick="openLightbox(this)">
+      <img src="p06.jpg" alt="Bride and groom under warm wall light" loading="lazy"/>
+      <div class="g-item-overlay"><span>Portraits</span></div>
+    </div>
+    <div class="g-item g-wide fade-in" onclick="openLightbox(this)">
+      <img src="p07.jpg" alt="Couple in white — dappled light" loading="lazy"/>
+      <div class="g-item-overlay"><span>Outdoor</span></div>
+    </div>
+    <div class="g-item fade-in" onclick="openLightbox(this)">
+      <img src="p04.jpg" alt="Bride twirling in embroidered lehenga" loading="lazy"/>
+      <div class="g-item-overlay"><span>Bridal</span></div>
+    </div>
+    <div class="g-item fade-in" onclick="openLightbox(this)">
+      <img src="p09.jpg" alt="Bride in red saree with gold jewellery" loading="lazy"/>
+      <div class="g-item-overlay"><span>Bridal</span></div>
+    </div>
+    <div class="g-item fade-in" onclick="openLightbox(this)">
+      <img src="p13.jpg" alt="Bride in red saree at night garden" loading="lazy"/>
+      <div class="g-item-overlay"><span>Night Portrait</span></div>
+    </div>
+    <div class="g-item g-wide fade-in" onclick="openLightbox(this)">
+      <img src="p03.jpg" alt="Couple portrait session by the pool" loading="lazy"/>
+      <div class="g-item-overlay"><span>Session</span></div>
+    </div>
+    <div class="g-item fade-in" onclick="openLightbox(this)">
+      <img src="p14.jpg" alt="Groom kissing bride at floral backdrop" loading="lazy"/>
+      <div class="g-item-overlay"><span>Ceremony</span></div>
+    </div>
+    <div class="g-item fade-in" onclick="openLightbox(this)">
+      <img src="p10.jpg" alt="Bride framed in doorway with chandelier" loading="lazy"/>
+      <div class="g-item-overlay"><span>Bridal</span></div>
+    </div>
+    <div class="g-item fade-in" onclick="openLightbox(this)">
+      <img src="p01.jpg" alt="Couple portrait at urban location" loading="lazy"/>
+      <div class="g-item-overlay"><span>Outdoor</span></div>
+    </div>
+    <div class="g-item fade-in" onclick="openLightbox(this)">
+      <img src="p05.jpg" alt="Couple maternity portrait at golden hour" loading="lazy"/>
+      <div class="g-item-overlay"><span>Portrait</span></div>
+    </div>
+    <div class="g-item fade-in" onclick="openLightbox(this)">
+      <img src="p11.jpg" alt="Bride through tropical foliage" loading="lazy"/>
+      <div class="g-item-overlay"><span>Candid</span></div>
+    </div>
+    <div class="g-item fade-in" onclick="openLightbox(this)">
+      <img src="p12.jpg" alt="Bride smiling in green saree" loading="lazy"/>
+      <div class="g-item-overlay"><span>Bridal</span></div>
+    </div>
+    <div class="g-item fade-in" onclick="openLightbox(this)">
+      <img src="p08.jpg" alt="Couple holding Bumble phones at reception" loading="lazy"/>
+      <div class="g-item-overlay"><span>Reception</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="divider"><span>✦</span></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec-header fade-in">
+    <p class="sec-label">The Story</p>
+    <h2 class="sec-title">About <em>Us</em></h2>
+  </div>
+  <div class="about-inner">
+    <div class="about-img-wrap fade-in">
+      <img src="p14.jpg" alt="A couple photographed by Radiate Glimpse"/>
+    </div>
+    <div class="about-text fade-in">
+      <p class="sec-label">Behind the lens</p>
+      <h3 class="sec-title" style="margin-bottom:28px">Crafting memories<br><em>that last forever</em></h3>
+      <p>At Radiate Glimpse, we believe a wedding is not just an event — it is a feeling. We step quietly into your most important day and return with images that carry the same warmth, joy, and love long after the music ends.</p>
+      <p>From intimate outdoor portrait sessions to full wedding day coverage, every frame we capture is a memory you will cherish for a lifetime.</p>
+      <div class="about-divider"></div>
+      <div class="about-location">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        Dhaka, Bangladesh · Available Worldwide
+      </div>
+      <div class="social-row">
+        <a href="https://www.facebook.com/radiateglimpse" target="_blank" rel="noopener" class="social-btn">
+          <svg class="fb-svg" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          Facebook
+        </a>
+        <a href="https://www.instagram.com/radiate_glimpse.bd" target="_blank" rel="noopener" class="social-btn">
+          <svg class="ig-svg" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          Instagram
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sec-header fade-in">
+    <p class="sec-label">Reserve Your Date</p>
+    <h2 class="sec-title">Book a <em>Session</em></h2>
+  </div>
+  <div class="contact-inner fade-in">
+    <p>Your wedding day deserves to be remembered beautifully. Share a few details and we'll be in touch within 24 hours.</p>
+    <div data-fs-success class="form-success" style="display:none">
+      Thank you — your story sounds beautiful.<br>We'll be in touch very soon. ✦
+    </div>
+    <div data-fs-error class="form-error-global" style="display:none"></div>
+
+    <form id="enquiry-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">Your Names</label>
+          <input type="text" id="name" name="name" placeholder="Bride & groom names" data-fs-field required/>
+          <span class="field-error" data-fs-error="name"></span>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" placeholder="+880" data-fs-field/>
+          <span class="field-error" data-fs-error="phone"></span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="hello@example.com" data-fs-field required/>
+          <span class="field-error" data-fs-error="email"></span>
+        </div>
+        <div class="form-group">
+          <label for="date">Wedding Date</label>
+          <input type="date" id="date" name="wedding_date" data-fs-field/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="service">Service</label>
+        <select id="service" name="service" data-fs-field>
+          <option value="">Select a service…</option>
+          <option>Pre-wedding outdoor portrait session</option>
+          <option>Post-wedding outdoor portrait session</option>
+          <option>Full event coverage</option>
+          <option>Pre-wedding + full event coverage</option>
+          <option>Not sure yet — let's talk</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="message">Tell Us About Your Wedding</label>
+        <textarea id="message" name="message" placeholder="Venue, theme, any special requests…" data-fs-field required></textarea>
+        <span class="field-error" data-fs-error="message"></span>
+      </div>
+      <input type="hidden" name="_subject" value="New wedding enquiry — Radiate Glimpse"/>
+      <button class="submit-btn" type="submit" data-fs-submit-btn>Send Enquiry</button>
+    </form>
+    <div class="contact-direct">
+      <p>Prefer to reach out directly?</p>
+      <div class="contact-links">
+        <a href="mailto:radiateglimpsebd@gmail.com" class="email-link">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+          radiateglimpsebd@gmail.com
+        </a>
+        <a href="tel:+8801675718018" class="email-link">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.4a2 2 0 0 1 1.99-2.18H5.6a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L6.91 8.91a16 16 0 0 0 6.08 6.08l.99-.99a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          01675718018
+        </a>
+        <a href="tel:+8801638795920" class="email-link">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.4a2 2 0 0 1 1.99-2.18H5.6a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L6.91 8.91a16 16 0 0 0 6.08 6.08l.99-.99a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          01638795920
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Radiate Glimpse</div>
+  <div class="footer-center">© 2025 · Dhaka, Bangladesh · All rights reserved</div>
+  <div class="footer-social">
+    <a href="https://www.facebook.com/radiateglimpse" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path class="fb-icon" d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+    </a>
+    <a href="https://www.instagram.com/radiate_glimpse.bd" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect class="ig-icon" x="2" y="2" width="20" height="20" rx="5" ry="5"/><path class="ig-icon" d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line class="ig-icon" x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+    </a>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <div class="lb-close" onclick="closeLightbox()">×</div>
+  <img id="lb-img" src="" alt=""/>
+</div>
+
+<script>
+  // Nav fill on scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('filled', window.scrollY > 60);
+  }, { passive: true });
+
+  // Hero bg subtle zoom in
+  window.addEventListener('load', () => {
+    document.getElementById('heroBg').classList.add('loaded');
+  });
+
+  // Scroll fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Lightbox
+  function openLightbox(item) {
+    const img = item.querySelector('img');
+    document.getElementById('lb-img').src = img.src;
+    document.getElementById('lb-img').alt = img.alt;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  // Formspree Ajax init
+  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+  formspree('initForm', { formElement: '#enquiry-form', formId: 'mrewerew' });
+</script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+</body>
+</html>
